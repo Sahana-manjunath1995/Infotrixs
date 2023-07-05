@@ -21,7 +21,10 @@
  5. Exit the Contact Directory after making necessary changes.
 
 ##  How to run the programme?
-    python contact_mng.py
+    
+```commandline
+python contact_mng.py
+```
 
 ## Conclusion:
   Contact management system was successfully built and contact data was stored in csv file.
