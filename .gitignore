@@ -4,4 +4,5 @@
 *.lock
 *.csv
 *.txt
+__pycache__
 
