@@ -1,4 +1,4 @@
-import sys
+import time
 import pandas as pd
 from filelock import FileLock
 from custom_exception import (
@@ -16,50 +16,77 @@ class ContactDirectory:
         lockfile = self.file_name+".lock"
         self.lock = FileLock(lockfile)
 
-    def directory_options(self):
-        """This function displays the menu for the users."""
-
-        print('*' * 120, '\nWelcome to Contact Directory Application!'
-                'Now you can Proceed with following options\n',
-                '*' * 120)
-
-        print(
-            'Please enter 1 to insert the contact details\n',
-            '\nPlease enter 2 to update the contact details\n',
-            '\nPlease enter 3 to search the contact details\n',
-            '\nPlease enter 4 to delete the contact details\n',
-            '\nPlease enter 5 to display the contact details\n',
-            '\nPlease enter 6 to exit the contact directory\n'
-        )
-
-    def num_exists(self, num):
+    def search_contact_exists(self, contact):
+        '''
+        check if contact exists, filter only those columsn enter by user.
+        :param contact: Dict{}
+        :return: True False
+        '''
         """This function checks if the number provided by user exists in
         contact directory.
         """
+        contact = {k: v for k, v in contact.items() if v != ''}
+        df = pd.read_csv(
+            'contact.csv',
+            dtype={'fname': str, 'lname': str, 'phone': str, 'org': str}
+        )
+        filter_df = df.copy()
+        for k, v in contact.items():
+            filter_df = filter_df[filter_df[k] == v]
 
-        df_1 = pd.read_csv(self.file_name)
-        if num in df_1['Phonenum'].values:
-            return True
-        return False
+        if filter_df.shape[0]:
+            return True, filter_df
+        else:
+            return False, filter_df
 
-    def insert_contact_num(self, name, num, org):
-        """This function adds new contact to contact directory"""
-
-        if self.num_exists(num):
-            raise ContactAlreadyExists(
-                'Contact already exists please enter new number'
-            )
+    def insert_contact_num(self, contact):
+        """
+        This function, given a contact will add it to the csv
+        :param contact: Dict({fname:, lname:, phone:, org:, email:})
+        """
 
         self.lock.acquire()
-        df_1 = pd.read_csv(self.file_name)
-        new_row = {'Name': [name], 'Phonenum': [num], 'Org': [org]}
-        df_2 = pd.DataFrame(new_row)
-        df_3 = pd.concat([df_1, df_2], ignore_index=True)
-        df_3.to_csv(self.file_name, index=False)
+
+        df = pd.read_csv(self.file_name)
+        new_row = {k: [v] for k, v in contact.items()}
+        new_contact_df = pd.DataFrame(new_row)
+        merged_df = pd.concat([df, new_contact_df], ignore_index=True)
+        merged_df.to_csv(self.file_name, index=False)
         self.lock.release()
-        print('Contact successfully added')
+
 
     def update_contact_num(self, name, num1, num2):
+        '''
+        take a index and contact dict to update
+        :param index: int index
+        :param contact: dict
+
+        Note: user will be assed to enter the old contact info (user may
+        not enter all the fields of the old info, you will have to create a
+        prompt without strict validations, but will have a vlidation that will
+        check that atleast fname or phone is entered by the user.)
+        - after the user has enter old info, use the search function to get the df
+        - if contact does not exist print a appropriate error msg to user
+        - if contact exits, display the contact df to user and confirm the index or
+        confirm with boolean if only one row present in the df(infer the index automaticaly),
+        - after confirmation take the new contact details form the user using the same propt used for insert and
+        use this index to update using this fuknction.
+
+        > sahana, '', 4567890, '', ''
+         sahana, 'bn' 567890, '', ''
+
+        update:
+         Name[sahana]:
+         Fname['']:
+         4567890
+         ''
+         ''
+
+         the propt will returen an contact dict which has old contact merged with new contact,
+         the new dict and index should be passed to the updated function
+
+
+        '''
         """This function updates the existing contact in contact directory."""
 
         if self.num_exists(num1):
@@ -77,36 +104,19 @@ class ContactDirectory:
         else:
             raise ContactNotfound('Contact name or number not found')
 
-    def search_contact_details(self, name):
-        """This function searches for existing contact in contact directory"""
 
-        df_1 = pd.read_csv(self.file_name)
-        if name in df_1['Name'].values:
-            contact_details = df_1[df_1['Name'] == name]
-            print(contact_details)
-        else:
-            raise ContactInfoUnFound(
-                'Contact details not found, please enter a valid Contact name'
-            )
-
-    def delete_contact(self, name, num):
-        """This function deletes the existing contact in contact directory."""
+    def delete_contact(self, indexes):
+        '''
+        Given an index this functio will delete the contact from the csv.
+        list[index]: list on indexes
+        '''
         self.lock.acquire()
-        df_1 = pd.read_csv(self.file_name)
-        if name in df_1['Name'].values:
-            name_index = df_1.index[df_1['Name'] == name].tolist()
-            num_index = df_1[df_1['Phonenum'] == num].index[0]
-            for ind in name_index:
-                if ind == num_index:
-                    df_2 = df_1.drop(ind)
-                    df_2.to_csv(self.file_name, index=False)
-                    self.lock.release()
-                    return 'Contact_details deleted successfully'
+        df = pd.read_csv(self.file_name)
+        indexes = list(map(int, indexes))
+        df = df.drop(indexes)
+        df.to_csv(self.file_name, index=False)
+        self.lock.release()
 
-        else:
-            raise ContactInfoUnFound(
-                'Contact details not found, please enter a valid Contact name'
-                )
 
     def display_all_contacts(self):
         """This function displays all the contacts of contact directory."""
@@ -114,10 +124,5 @@ class ContactDirectory:
         df_1 = pd.read_csv(self.file_name)
         print(df_1)
 
-    def exit_contact_directory(self):
-        """This function exits contact directory."""
 
-        print("*"*120)
-        print("Thank you for using Contact directory system.")
-        print("*"*120)
-        sys.exit("Goodbye, have a nice day ahead!")
+
