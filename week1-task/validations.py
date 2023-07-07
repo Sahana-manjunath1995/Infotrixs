@@ -1,27 +1,20 @@
 import re
 import inquirer
 
-def phone_validation(answers, current):
-    # if current == '':
-    #     return True
-    if not re.match(r"\+?\d[\d ]+\d", current):
-        raise inquirer.errors.ValidationError("", reason="Invalid Phone Number!")
 
-    return True
+class Validations:
 
-def fname_validation(answers, current):
+    def phone_validation(self, answers, current):
+        if not re.match(r"\+?\d[\d ]+\d", current):
+            raise inquirer.errors.ValidationError("", reason="Invalid Phone Number!")
 
-    if not re.match(r".+", current):
-        raise inquirer.errors.ValidationError("", reason="Invalid Name!")
+        return True
 
-    return True
+    def fname_validation(self, answers, current):
+        if not re.match(r".+", current):
+            raise inquirer.errors.ValidationError("", reason="Invalid Name!")
 
-def lname_validation(answers, current):
-
-    if not re.match(r".*", current):
-        raise inquirer.errors.ValidationError("", reason="Invalid Name!")
-
-    return True
+        return True
 
 
 

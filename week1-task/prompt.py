@@ -1,7 +1,9 @@
-import re
 import inquirer
-from validations import fname_validation, lname_validation, phone_validation
+from validations import Validations
+from inquirer.themes import Default
 
+
+THEME = Default()
 
 def user_choice_prompt():
     choices = [
@@ -15,7 +17,7 @@ def user_choice_prompt():
     questions = [
         inquirer.List("selected", message='Please select the option: ', choices=choices)
     ]
-    choice = inquirer.prompt(questions)
+    choice = inquirer.prompt(questions, theme=THEME)
     return int(choice['selected'].split('.')[0])
 
 
@@ -27,47 +29,50 @@ def try_again_prompt(msg):
     questions = [
         inquirer.List("selected", message='Please select an option: ', choices=choices)
     ]
-    choice = inquirer.prompt(questions)
+    choice = inquirer.prompt(questions, theme=THEME)
     return int(choice['selected'].split('.')[0])
 
 
-def all_info_prompt(msg, validation=True):
+def all_info_prompt(msg, old_value={}, validation=True):
     print(msg)
+    v = Validations()
     inp = [
-        inquirer.Text("fname", message="First Name",
-                      validate=fname_validation if validation else True),
-        inquirer.Text("lname", message="Last Name",
-                      validate=lname_validation if validation else True),
-        inquirer.Text("phone", message="Phone",
-                      validate=phone_validation if validation else True),
-        inquirer.Text("org", message="Organization", default=None)
+        inquirer.Text("fname", message="First Name", default=old_value.get('fname', None),
+                      validate=v.fname_validation if validation else True),
+        inquirer.Text("lname", message="Last Name", default=old_value.get('lname', None)),
+        inquirer.Text("phone", message="Phone", default=old_value.get('phone', None),
+                      validate=v.phone_validation if validation else True),
+        inquirer.Text("org", message="Organization", default=old_value.get('org', None),)
     ]
-    return inquirer.prompt(inp)
+    res = inquirer.prompt(inp, theme=THEME)
 
-def confirm_add_contact(msg):
+
+    return res
+
+def get_confirmation(msg):
     ques = [
         inquirer.Confirm("confirmation", message=msg),
     ]
-    answers = inquirer.prompt(ques)
+    answers = inquirer.prompt(ques, theme=THEME)
     return answers['confirmation']
 
 
-def update_prompt(msg):
-    print(msg)
-    inp = [
-        inquirer.Text("fname", message="First Name", validate=update_fname_validation),
-        inquirer.Text("lname", message="Last Name"),
-        inquirer.Text("phone", message="Phone", validate=update_phone_validation),
-        inquirer.Text("org", message="Organization", default=None)
+def update_prompt(msg, choices):
+
+    questions = [
+        inquirer.List("selected", message=msg,
+                      choices=choices)
     ]
-    answer = inquirer.prompt(inp)
-    return answer
+    choice = inquirer.prompt(questions, theme=THEME)['selected']
+
+    return choice
+
 
 def confirm_delete_contact():
     ques = [
         inquirer.Confirm("Delete contact", message="Do you want to delete the Contact information?"),
     ]
-    answers = inquirer.prompt(ques)
+    answers = inquirer.prompt(ques, theme=THEME)
     return answers
 
 
@@ -79,11 +84,12 @@ def checkbox_prompt(msg, choices):
             choices=choices,
         ),
     ]
-    return inquirer.prompt(questions)['interests']
+
+    return inquirer.prompt(questions, theme=THEME)['interests']
 
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # selected_choice_num = user_choice_prompt()
     # print(selected_choice_num)
 
@@ -91,4 +97,4 @@ if __name__ == '__main__':
     # print(info)
     # c = confirm_add_contact()
     # print(c)
-    d = update_prompt('Enter the info')
+    # d = update_prompt('Enter the info')
