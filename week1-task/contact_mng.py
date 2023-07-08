@@ -7,6 +7,10 @@ from prompt import user_choice_prompt
 
 
 def get_config():
+    """
+    This function reads the config file and return the ConfigParser object
+    :return:ConfigParser
+    """
 
     config = ConfigParser(interpolation=ExtendedInterpolation())
     config.read('config.ini')
@@ -18,11 +22,18 @@ if __name__ == '__main__':
     print(CONFIG['Data']['CONTACT_FILE'])
     c = ContactDirectory(CONFIG['Data']['CONTACT_FILE'])
     while True:
+
+        #User is prompted to select the option in the application"""
         inp1 = user_choice_prompt()
+
+        #If the user selects 1 option insert_logic function is used to add Contact details
 
         if inp1 == 1:
             insert_logic(c)
             time.sleep(2)
+
+
+        # If the user selects 2 option update_logic is used to update the contact details
 
         elif inp1 == 2:
             while True:
@@ -32,6 +43,8 @@ if __name__ == '__main__':
                 if choice == 2:
                     break
 
+        # If the user selects 3 option search_logic is used to search for contact details.
+
         elif inp1 == 3:
             while True:
                 search_logic(c)
@@ -40,6 +53,7 @@ if __name__ == '__main__':
                 if choice == 2:
                     break
 
+        # If the user selects 4 option delete_logic is used to delete the contact details.
 
         elif inp1 == 4:
             while True:
@@ -48,9 +62,13 @@ if __name__ == '__main__':
                 if choice == 2:
                     break
 
+        # If the user selects 5 option all contact details will be displayed.
 
         elif inp1 == 5:
             c.display_all_contacts()
+            time.sleep(6)
+
+        # If the user selects 6 option all user will be exited from the Contact director application.
 
         elif inp1 == 6:
             print("*" * 120)
