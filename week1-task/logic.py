@@ -3,6 +3,7 @@ from prompt import (
      all_info_prompt, get_confirmation,
      checkbox_prompt, try_again_prompt, update_prompt
 )
+from tabulate import tabulate
 
 
 def try_again(msg):
@@ -70,6 +71,7 @@ def insert_logic(c):
     if confirm:
         c.insert_contact_num(contact)
         print('Contact successfully added!\n')
+        c.display_all_contacts()
     else:
         print("Skipping and going back to the main screen.")
 
@@ -127,8 +129,10 @@ def search_logic(c):
     exists, existing_df = c.search_contact_exists(contact)
 
     if exists:
-        print('The following contact were found!')
-        print(existing_df)
+        print('The following contact were found!\n')
+        table = tabulate(existing_df.head(7), headers="keys", tablefmt="fancy_grid")
+        print(table)
+        time.sleep(2)
     else:
         print('No contact found with the given information!')
 
@@ -152,12 +156,13 @@ def delete_logic(c):
         heading, choices = row_info(existing_df)
 
         msg = (
-            "Choose the contacts you would like to delete! \n"
-            "[NOTE: Press -> to select, <- to unselect & Enter to submit!]\n"
-            f"      {heading}"
+            "Choose the contacts you would like to delete!"
+            "\n[NOTE: Press -> to select, <- to unselect & Enter to submit!]"
+
         )
         indexes = checkbox_prompt(msg, choices)
         c.delete_contact(indexes)
         print('Contact deleted successfully')
+        c.display_all_contacts()
     else:
         print('No contact found with the given information!')
