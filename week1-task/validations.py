@@ -10,11 +10,15 @@ class Validations:
     def phone_validation(self, answers, current):
         """
         This function validates the phone number entered by the user, if the
-        user tries to leave it blank or enter characters other than
-        digits it will raise the error.
-        :param answers:Dict{}
+        user leaves the phone number field blank or enter characters other than
+        digits it will raise the error. If the user provides digits it will
+        return True.
+
+        :param answers:dict()
         :param current:str()
             desc: User entered details
+            Example:
+                current = '9880949899'
         :return:bool()
         """
 
@@ -26,12 +30,15 @@ class Validations:
     def fname_validation(self, answers, current):
         """
         This function validates the firstname entered by the user, if the
-        user leaves it blank it will raise the error. Any characters for
-        fname is valid.
-        :param answers:Dict{}
+        user leaves the first name field blank it will raise the error. If the
+        user provides data it will return True.
+
+        :param answers:dict()
         :param current:str()
             desc: User entered details
-        :return:bool()
+            Example:
+                current = 'sahana'
+        :return: bool()
         """
 
         if not re.match(r".+", current):

@@ -10,7 +10,9 @@ def user_choice_prompt():
     This function prompts the user to select the option of the user menu,
     selected option number will be returned.
     :return:int()
-     desc: Selected option number
+        desc: Selected option number
+        Example:
+            res = 1
     """
     choices = [
         '1. Add Contact',
@@ -29,12 +31,14 @@ def user_choice_prompt():
 
 def try_again_prompt(msg):
     """
-    This function prompts the user with the option to repeat the same task
+    This function prompts the user with the option to repeat the current task
     or to go back to the main menu. If the user selects 1st option they can
-    repeat the same task. It returns the user selected option number.
+    repeat the current task, and it returns the user selected option number.
 
     :return:int() 
-     desc: Selected option number
+        desc: Selected option number
+        Example:
+            res = 1
     """
 
     choices = [
@@ -54,15 +58,21 @@ def all_info_prompt(msg, old_value={}, validation=True):
     it will be validated based on keyword argument, it will return Contact
     details entered by the user.
 
-    :param msg:str()
-           desc: Message to be displayed in the terminal
-    :param old_value:Dict{}
-            desc: Old contacts provided by the users while updating the
-            contact info
-    :param validation:bool()
-            desc: Provide it with True or False
-    :return: Dict()
+    :param msg: str()
+        desc: Message to be displayed in the terminal
+        Example: Enter the contact details.
+    :param old_value: dict()
+        desc: Old contact information provided by the users to update the
+              existing contact information.
+        Example:
+             old_value = {'name': 'Jhon', lname: 'tim', 'phone': '129665'}
+
+    :param validation: bool() default is True
+        desc: True or False
+    :return: dict()
         desc: Contact information provided by the user.
+        Example:
+            contact_dict = {'name': 'Jhon', lname: 'tim', 'phone': '129665'}
     """
 
     print(msg)
@@ -83,10 +93,14 @@ def all_info_prompt(msg, old_value={}, validation=True):
 def get_confirmation(msg):
     """
     This function prompts the user to type y/N and returns bool answers.
-    :param msg:str()
+
+    :param msg: str()
           desc: Message to be displayed in the terminal
+          Example:
+            msg = 'Are you sure of adding the contact?'
     :return: bool()
     """
+
     ques = [
         inquirer.Confirm("confirmation", message=msg),
     ]
@@ -96,15 +110,21 @@ def get_confirmation(msg):
 
 def update_prompt(msg, choices):
     """
-    This function prompts the user to select the contact that they want to
-    update, and it returns the selected row number.
+    This function prompts the user to select the desired contact to be
+    updated, and it returns the selected row number.
 
     :param msg:str()
            desc: Message to be displayed in the terminal
-    :param choices: list()
+           Example:
+                msg = 'Select the desired contacts'
+    :param choices: list(tuple())
             desc: list containing row information and row index
+            Example:
+                choices = [(0, 'Shashi','Kumar','988254768', '', 0)]
     :return:int()
         desc: Returns row number selected by the user.
+        Example
+            res = 1
     """
 
     questions = [
@@ -119,8 +139,20 @@ def update_prompt(msg, choices):
 def checkbox_prompt(msg, choices):
     """
     This function provides checkbox prompt to the user to select the
-    multiple contacts that they want to delete from the contact directory
+    multiple desired contacts to be deleted from the contact directory
     and returns the row index of selected option.
+
+    :param msg:str()
+           desc: Message to be displayed in the terminal
+           Example:
+                msg = 'Select the desired contacts that you want to delete'
+    :param choices: list(tuple())
+            desc: list containing row information and row index
+            Example:
+                choices = [(0, 'Shashi','Kumar','988254768', '' 0)]
+    :return: list()
+            Example:
+                res = [0,1,2]
     """
 
     questions = [

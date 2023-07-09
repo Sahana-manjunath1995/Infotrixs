@@ -5,21 +5,35 @@ from tabulate import tabulate
 
 class ContactDirectory:
     """
-    This is class for Contact Management system that creates, updates, searches,
-    and deletes the contact
+    This class represents a contact management system that can create,
+    update, search, delete, and display contacts.
     """
 
     def __init__(self, file):
+        """
+        This is a constructor for ContactDirectory class
+        :param file: .csv file
+               desc: Contact information storage file
+               Example:
+                    file = contact.csv
+        """
         self.file_name = file
         lockfile = self.file_name+".lock"
         self.lock = FileLock(lockfile)
 
     def get_contact(self, index):
         """
-        This function returns the contact information based on the selected
-        row number
-        :param index: int
-        :return: Dict{}
+        This function retrieves the contact information based on the selected
+        row number.
+
+        :param index: int()
+            desc: Row number selection by the user.
+            Example:
+                index = 1
+        :return: dict{}
+            desc: Contact information based on selected row
+            Example:
+                contact_dict = {'name': 'sahana', lname: 'nm','phone': '12345'}
         """
 
         df = pd.read_csv('contact.csv', dtype={'phone': str})
@@ -27,10 +41,19 @@ class ContactDirectory:
 
     def search_contact_exists(self, contact):
         """
-        This function checks if the contact exists, by filtering only those
-        contact information provided by user.
-        :param contact: Dict{}
-        :return: True False
+        This function checks the presence of the contact, filtering only the
+        contact data provided by the user.
+
+        :param contact: dict()
+            desc: User's Contact data
+            Example:
+                contact = {'name': 'sahana', lname: 'nm', 'phone': '12345'}
+        :return: tuple(bool(), pd.DataFrame())
+            res = (True,
+                          fname lname  phone  org
+                       -----------------------------
+                       1  Sahana    nm  12366  NaN)
+
         """
 
         contact = {k: v for k, v in contact.items() if v != ''}
@@ -46,11 +69,12 @@ class ContactDirectory:
 
     def insert_contact_num(self, contact):
         """
-        This function adds a contact information, and store it in csv file.
+        This function adds a contact information, and stores it in csv file.
 
-        :param contact: Dict({fname:, lname:, phone:, org:, email:}),
-                desc: The information provided by the user
-
+        :param contact: dict()
+            desc: The information submitted by the user.
+            Example:
+                contact = {'name': 'sahana', lname: 'nm', 'phone': '12345'}
         """
 
         self.lock.acquire()
@@ -67,11 +91,15 @@ class ContactDirectory:
         as well as add  new information provided by the user and stores it in
         csv file.
 
-        :param index: int()
-                desc: Row number selected by the user
+        :param row_index: int()
+            desc: Row number selection by the user.
+            Example:
+                row_index: 5
 
-        :param contact: Dict({fname:, lname:, phone:, org:, email:})
-                desc: Updated information provided by the user
+        :param contact: dict()
+            desc: Updated information provided by the user.
+            Example:
+                contact = {'name': 'Jhon', lname: 'tim', 'phone': '129665'}
         """
 
         self.lock.acquire()
@@ -86,7 +114,9 @@ class ContactDirectory:
         This function deletes the row selected by user.
 
         :param indexes: list()
-               desc: List of rows(row indexes) selected by the user
+            desc: List of rows(row indexes) selected by the user
+            Example:
+                indexes = [0,1,2]
 
         """
         self.lock.acquire()
@@ -101,7 +131,7 @@ class ContactDirectory:
         """This function displays all the contacts of contact directory."""
 
         df = pd.read_csv(self.file_name, dtype={"phone": str})
-        table = tabulate(df.head(7), headers="keys", tablefmt="fancy_grid")
+        table = tabulate(df.head(50), headers="keys", tablefmt="fancy_grid")
         print(table)
 
 
