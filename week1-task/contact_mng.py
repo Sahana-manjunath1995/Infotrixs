@@ -8,8 +8,8 @@ from prompt import user_choice_prompt
 
 def get_config():
     """
-    This function reads the config file and return the ConfigParser
-    :return:ConfigParser
+    This function reads the config file and returns the config file object.
+    :return:config file object
     """
 
     config = ConfigParser(interpolation=ExtendedInterpolation())
