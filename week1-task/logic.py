@@ -11,7 +11,7 @@ def try_again(msg):
     This function is used to get the try again prompt that prompts the user
     to select the options.
 
-    :param msg: str()s
+    :param msg: str()
     :return: str()
     """
 
@@ -21,10 +21,10 @@ def try_again(msg):
 
 def row_info(existing_df):
     """
-    This function get the row information and row indexes that is existing in
+    This function gets the row information and row indexes that is existing in
     Contact Directory.
-    :param existing_df: DataFrame()
-            desc: Information selected by the user
+    :param existing_df: Existing contact dataFrame
+            desc: Row selected by the user
 
     :return: tuple()
             desc: Returns headers and list of contact information
@@ -45,10 +45,10 @@ def row_info(existing_df):
 def insert_logic(c):
     """
     This function provides a prompt for user information and checks for contact
-    existence provided by the user. Prompt for the confirmation to add
+    existence provided by the user. 
     Prompt for the confirmation to add contact will be used for both existing
     and non-existing contact information in phone directory. Based on the
-    conformation prompt contact will be added.
+    conformation prompt contact will be added to the Contact Directory.
 
     :param c: contact object
           desc: Contact object created for ContactDirectory class
@@ -96,7 +96,10 @@ def update_logic(c):
 
     if exists:
         print('\nFollowing are the existing Contacts:\n')
-        print(existing_df)
+        df2 = existing_df.fillna('')
+        table = tabulate(df2.head(50), headers="keys",
+                         tablefmt="fancy_grid")
+        print(table)
         heading, choices = row_info(existing_df)
 
         msg = (
@@ -116,8 +119,8 @@ def update_logic(c):
 
 def search_logic(c):
     """
-    This function provides a prompt for user information. Based on the
-    user details search is conducted. If the contact exists results will be
+    This function provides a prompt for user to enter the contact information. Based on the
+    user details search is performed. If the contact exists results will be
     displayed or else it will show no contacts were found.
 
    :param c: contact object
@@ -139,11 +142,11 @@ def search_logic(c):
 
 def delete_logic(c):
     """
-     This function provides the prompt to enter the contact information. Based
-     on entered contact info search is conducted
-     if the contact exists check box prompt will be displayed for users to
-     select the contacts that they want to delete. Selection of rows provides
-     row index, based on row index contact information will  e deleted.
+     This function provides the prompt for the user to enter the contact information. Based
+     on entered contact information search is search is performed
+     if the contact exists, check box prompt will be displayed for users to
+     select the contacts that they want to delete. Selection of rows by the user provides
+     row index, based on row index contact information will be deleted.
 
 
      :param c: contact object
