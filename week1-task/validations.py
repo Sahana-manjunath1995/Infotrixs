@@ -4,13 +4,13 @@ import inquirer
 
 class Validations:
     """
-    This class validates the user details provided by users
+    This class validates the user's contact information provided by the users.
     """
 
     def phone_validation(self, answers, current):
         """
         This function validates the phone number entered by the user, if the
-        user tries to leave it blank or tries to enter characters other than
+        user tries to leave it blank or enter characters other than
         digits it will raise the error.
         :param answers:Dict{}
         :param current:str()
