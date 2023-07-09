@@ -12,7 +12,7 @@ class Validations:
         This function validates the phone number entered by the user, if the
         user tries to leave it blank or tries to enter characters other than
         digits it will raise the error.
-        :param answers:Dic{}
+        :param answers:Dict{}
         :param current:str()
             desc: User entered details
         :return:bool()
@@ -28,7 +28,7 @@ class Validations:
         This function validates the firstname entered by the user, if the
         user leaves it blank it will raise the error. Any characters for
         fname is valid.
-        :param answers:Dic{}
+        :param answers:Dict{}
         :param current:str()
             desc: User entered details
         :return:bool()
