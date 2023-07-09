@@ -50,7 +50,7 @@ def insert_logic(c):
     and non-existing contact information in phone directory. Based on the
     conformation prompt contact will be added.
 
-    :param c: c()
+    :param c: contact object
           desc: Contact object created for ContactDirectory class
     """
 
@@ -85,7 +85,7 @@ def update_logic(c):
    information. Based on the user selected row and new information entered
    by users contact details will be updated.
 
-   :param c: c()
+   :param c: contact object
          desc: Contact object created for ContactDirectory class
     """
 
@@ -120,7 +120,7 @@ def search_logic(c):
     user details search is conducted. If the contact exists results will be
     displayed or else it will show no contacts were found.
 
-   :param c: c()
+   :param c: contact object
          desc: Contact object created for ContactDirectory class
        """
 
@@ -146,7 +146,7 @@ def delete_logic(c):
      row index, based on row index contact information will  e deleted.
 
 
-     :param c: c()
+     :param c: contact object
            desc: Contact object created for ContactDirectory class
       """
 
