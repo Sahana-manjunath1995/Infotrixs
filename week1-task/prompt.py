@@ -7,8 +7,8 @@ THEME = BlueComposure()
 
 def user_choice_prompt():
     """
-    This function prompts the user to select the option of user menu,
-    selected option number will be returned
+    This function prompts the user to select the option of the user menu,
+    selected option number will be returned.
     :return:int()
      desc: Selected option number
     """
@@ -29,11 +29,11 @@ def user_choice_prompt():
 
 def try_again_prompt(msg):
     """
-    This function prompts the user with option to repeat the same tasks
-    or to go back to the main menu. If the user select 1 option they can
-    repeat the same task. It returns the selected user option number.
+    This function prompts the user with the option to repeat the same task
+    or to go back to the main menu. If the user selects 1st option they can
+    repeat the same task. It returns the user selected option number.
 
-    :return:int()
+    :return:int() 
      desc: Selected option number
     """
 
@@ -50,7 +50,7 @@ def try_again_prompt(msg):
 
 def all_info_prompt(msg, old_value={}, validation=True):
     """
-    This function prompts the user to provide contact information, and
+    This function prompts the user to provide all the contact information, and
     it will be validated based on keyword argument, it will return Contact
     details entered by the user.
 
@@ -61,7 +61,8 @@ def all_info_prompt(msg, old_value={}, validation=True):
             contact info
     :param validation:bool()
             desc: Provide it with True or False
-    :return:
+    :return: Dict()
+        desc: Contact information provided by the user.
     """
 
     print(msg)
@@ -81,7 +82,7 @@ def all_info_prompt(msg, old_value={}, validation=True):
 
 def get_confirmation(msg):
     """
-    This function prompts the user to type y/N and returns bool answers
+    This function prompts the user to type y/N and returns bool answers.
     :param msg:str()
           desc: Message to be displayed in the terminal
     :return: bool()
@@ -118,8 +119,8 @@ def update_prompt(msg, choices):
 def checkbox_prompt(msg, choices):
     """
     This function provides checkbox prompt to the user to select the
-    multiple contacts that they want to delete from their contact directory
-    and returns row index
+    multiple contacts that they want to delete from the contact directory
+    and returns the row index of selected option.
     """
 
     questions = [
@@ -132,22 +133,3 @@ def checkbox_prompt(msg, choices):
 
     return inquirer.prompt(questions, theme=THEME)['interests']
 
-# def confirm_delete_contact():
-#
-#     ques = [
-#         inquirer.Confirm("Delete contact", message="Do you want to delete the Contact information?"),
-#     ]
-#     answers = inquirer.prompt(ques, theme=THEME)
-#     return answers
-
-
-
-# if __name__ == '__main__':
-    # selected_choice_num = user_choice_prompt()
-    # print(selected_choice_num)
-
-    # info = all_info_prompt('Enter the Old contact info.')
-    # print(info)
-    # c = confirm_add_contact()
-    # print(c)
-    # d = update_prompt('Enter the info')
