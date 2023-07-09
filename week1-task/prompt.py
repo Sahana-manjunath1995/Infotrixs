@@ -56,7 +56,7 @@ def all_info_prompt(msg, old_value={}, validation=True):
 
     :param msg:str()
            desc: Message to be displayed in the terminal
-    :param old_value:Dict()
+    :param old_value:Dict{}
             desc: Old contacts provided by the users while updating the
             contact info
     :param validation:bool()
